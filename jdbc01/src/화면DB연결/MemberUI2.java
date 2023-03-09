@@ -47,28 +47,28 @@ public class MemberUI2 {
 				String name = t3.getText();
 				String tel = t4.getText();
 
-				if(id.equals("")) {
+				if (id.equals("")) {
 					JOptionPane.showMessageDialog(f, "ID는 필수 입력 항목입니다.");
 				}
-				
+
 				MemberDAO3 dao = new MemberDAO3();
-			
-				//1.가방을 만들어주세요.
+
+				// 1.가방을 만들어주세요.
 				MemberVO bag = new MemberVO();
-				//2.가방에 값들을 넣어주세요.
+				// 2.가방에 값들을 넣어주세요.
 				bag.setId(id);
 				bag.setPw(pw);
 				bag.setName(name);
 				bag.setTel(tel);
-				//3.값들이 들어있는 가방을 전달하자. 
+				// 3.값들이 들어있는 가방을 전달하자.
 				int result = dao.insert(bag);
-				
-				if(result == 1) {
+
+				if (result == 1) {
 					JOptionPane.showMessageDialog(f, "회원가입 성공");
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(f, "회원가입 실패, 재입력해주세요.");
 				}
-				
+
 			}// action
 		});// b1
 
@@ -79,52 +79,83 @@ public class MemberUI2 {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("회원탈퇴 처리");
 				String id = t1.getText();
-				
-				
+
 				MemberDAO3 dao = new MemberDAO3();
-				
-				//1.가방을 만들어주세요.
+
+				// 1.가방을 만들어주세요.
 				MemberVO bag = new MemberVO();
-				//2.가방에 값들을 넣어주세요.
+				// 2.가방에 값들을 넣어주세요.
 				bag.setId(id);
-				//3.값들이 들어있는 가방을 전달하자. 
+				// 3.값들이 들어있는 가방을 전달하자.
 				int result = dao.delete(bag);
-				
-				if(result == 1) {
+
+				if (result == 1) {
 					JOptionPane.showMessageDialog(f, "회원탈퇴 성공");
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(f, "회원탈퇴 실패, 재입력해주세요.");
 				}
 			}// action
 		});// b2
 
-		
 		// 수정기능
 		b3.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("회원수정 처리");
-				String id = t1.getText(); //조건
-				String tel = t4.getText(); //바꾸는 항목
+				String id = t1.getText(); // 조건
+				String tel = t4.getText(); // 바꾸는 항목
 
 				MemberDAO3 dao = new MemberDAO3();
-				//1. 가방을 만들자
+				// 1. 가방을 만들자
 				MemberVO bag = new MemberVO();
-				//2.가방에 값을 넣자
+				// 2.가방에 값을 넣자
 				bag.setId(id);
 				bag.setTel(tel);
 				int result = dao.update(bag);
-				
 
-				if(result == 1) {
+				if (result == 1) {
 					JOptionPane.showMessageDialog(f, "회원수정 성공");
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(f, "회원수정 실패, 재입력해주세요.");
 				}
-				
+
 			}// action
 		});// b3
+		//자바는 변수에 들어갈 데이터 타입 변수명을 써줘야
+		//ram에 저장공간이 만들어진다.
+		//ex) String test = null; ==> 선언
+		//자바는 선언시 변수가 만들어진다.
+		//자바는 선언시 변수에 들어갈 타입도 결정! 
+
+		// 검색기능
+		b4.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("회원검색 처리");
+				String id = t1.getText();
+
+				MemberDAO3 dao = new MemberDAO3();
+				MemberVO bag = dao.one(id); //MemberVO
+				if(bag != null) {
+				t2.setText(bag.getPw());
+				t3.setText(bag.getName());
+				t4.setText(bag.getTel());
+				
+				t2.setBackground(Color.pink);
+				t3.setBackground(Color.pink);
+				t4.setBackground(Color.pink);
+				} else {
+					JOptionPane.showMessageDialog(f, "검색결과없음");
+					t2.setText("");
+					t3.setText("");
+					t4.setText("");
+				}
+				
+				
+			}// action
+		});// b4
 
 		// f에 위에 있는 요소들을 add로 붙여줘야하는데,
 		// 붙이는 순서대로 물 흐르듯이 붙여주고 싶음.
