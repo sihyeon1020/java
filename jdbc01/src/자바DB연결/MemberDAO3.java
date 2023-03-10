@@ -4,21 +4,89 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import 화면DB연결.MemberVO;
 
 public class MemberDAO3 {
-	
-	//로그인 화면 연동시키기 StartUI
-	public MemberVO login(String id, String pw) {
 
-		ResultSet rs = null; //항목명 + 결과 데이터를 담고 있는 테이블 
-		//기본형 정수/실수/문자/논리만 값으로 초기화
-		//나머지 데이터형(참조형) 주소가 들어가있다.
-		//참조형 변수를 초기화 할 때는 null(주소가 없다라는 의미)
+	// 로그인 화면 연동시키기 StartUI
+	public ArrayList<MemberVO> list() {
+		ResultSet rs = null; // 항목명 + 결과 데이터를 담고 있는 테이블
+
+		// 가방들 넣어줄 큰 컨테이너 역할을 부품이 필요!
+		// ArrayList
+		ArrayList<MemberVO> list = new ArrayList<>();
 
 		MemberVO bag = null;
-		
+
+		try {
+			// 1.오라클 11g와 연결한 부품 설정
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			System.out.println("1. 오라클과 자바 연결할 부품 설정 성공.");
+
+			// 2.오라클 11g에 연결해보자.(java --- oracle)
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String user = "system";
+			String password = "oracle";
+			Connection con = DriverManager.getConnection(url, user, password); // Connection
+			// String data = JOptionPane.showInputDialog("이름입력"); //String, 임아무개
+			System.out.println("2. 오라클 연결 성공.");
+
+			String sql = "select * from hr.MEMBER"; // row 정보 다 들고 올 거니까 조건 없음
+			PreparedStatement ps = con.prepareStatement(sql); // PreparedStatement
+
+			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
+
+			rs = ps.executeQuery(); // select문 전송시
+			System.out.println("4. SQL문 오라클로 보내기 성공.");
+			while (rs.next()) { // 검색 결과가 있는지 여부는 rs.next()
+				// 여러정보를 받을 거라 반복문 while로 변경
+				// true이면 있다라는 의미, false이면 없다라는 의미
+				// 1.검색 결과가 있으면
+				//System.out.println("검색 결과 있음. 성공.");
+				// 2. 각 컬럼에서 값들을 꺼내오자. 
+				String id2 = rs.getString(1); 
+				String pw = rs.getString(2); 
+				String name = rs.getString(3);
+				String tel = rs.getString(4); 
+				//System.out.println(id2 + " " + pw + " " + name + " " + tel);
+
+
+				// 검색 결과를 검색화면 ui부분을 주어야 함.
+				// 3.가방을 만듭시다.
+				bag = new MemberVO();
+				bag.setId(id2);
+				bag.setPw(pw);
+				bag.setName(name);
+				bag.setTel(tel);
+				
+				// 4.list에 bag을 추가하자.
+				list.add(bag);
+				
+				//ps.close();
+				//rs.close();
+				//con.close();
+			}
+
+			// System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	// 로그인 화면 연동시키기 StartUI
+	public MemberVO login(String id, String pw) {
+
+		ResultSet rs = null; // 항목명 + 결과 데이터를 담고 있는 테이블
+		// 기본형 정수/실수/문자/논리만 값으로 초기화
+		// 나머지 데이터형(참조형) 주소가 들어가있다.
+		// 참조형 변수를 초기화 할 때는 null(주소가 없다라는 의미)
+
+		MemberVO bag = null;
+
 		try {
 			// 1.오라클 11g와 연결한 부품 설정
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -39,17 +107,17 @@ public class MemberDAO3 {
 			// con부품으로 sql스트링에 있는 것 SQL부품으로 만들어주세요.
 			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
 
-			rs = ps.executeQuery(); //select문 전송시 
+			rs = ps.executeQuery(); // select문 전송시
 			System.out.println("4. SQL문 오라클로 보내기 성공.");
-			if (rs.next()) { //검색 결과가 있는지 여부는 rs.next()
-				//true이면 있다라는 의미, false이면 없다라는 의미
+			if (rs.next()) { // 검색 결과가 있는지 여부는 rs.next()
+				// true이면 있다라는 의미, false이면 없다라는 의미
 				System.out.println("로그인 성공.");
-				String id2 = rs.getString(1); //id
-				String pw2 = rs.getString(2); //pw
-		
+				String id2 = rs.getString(1); // id
+				String pw2 = rs.getString(2); // pw
+
 				System.out.println(id2 + " " + pw2);
-				//검색 결과를 검색화면 ui부분을 주어야 함.
-				//1.가방을 만듭시다.
+				// 검색 결과를 검색화면 ui부분을 주어야 함.
+				// 1.가방을 만듭시다.
 				bag = new MemberVO();
 				bag.setId(id2);
 				bag.setPw(pw2);
@@ -62,23 +130,23 @@ public class MemberDAO3 {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		//return id, pw, name, tel은 xxxx
-		//return 뒤에는 반드시 여러 데이터를 묶어서 리턴해주어야 한다.
-		//검색 결과가 있을 때는 bag에 데이터가 들어있음.
-		//검색 결과가 없을 때는 bag에 무엇이 들어있나? ==> null
+
+		// return id, pw, name, tel은 xxxx
+		// return 뒤에는 반드시 여러 데이터를 묶어서 리턴해주어야 한다.
+		// 검색 결과가 있을 때는 bag에 데이터가 들어있음.
+		// 검색 결과가 없을 때는 bag에 무엇이 들어있나? ==> null
 		return bag;
 	}
-	
+
 	public MemberVO one(String id) {
 
-		ResultSet rs = null; //항목명 + 결과 데이터를 담고 있는 테이블 
-		//기본형 정수/실수/문자/논리만 값으로 초기화
-		//나머지 데이터형(참조형) 주소가 들어가있다.
-		//참조형 변수를 초기화 할 때는 null(주소가 없다라는 의미)
+		ResultSet rs = null; // 항목명 + 결과 데이터를 담고 있는 테이블
+		// 기본형 정수/실수/문자/논리만 값으로 초기화
+		// 나머지 데이터형(참조형) 주소가 들어가있다.
+		// 참조형 변수를 초기화 할 때는 null(주소가 없다라는 의미)
 
 		MemberVO bag = null;
-		
+
 		try {
 			// 1.오라클 11g와 연결한 부품 설정
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -98,18 +166,18 @@ public class MemberDAO3 {
 			// con부품으로 sql스트링에 있는 것 SQL부품으로 만들어주세요.
 			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
 
-			rs = ps.executeQuery(); //select문 전송시 
+			rs = ps.executeQuery(); // select문 전송시
 			System.out.println("4. SQL문 오라클로 보내기 성공.");
-			if (rs.next()) { //검색 결과가 있는지 여부는 rs.next()
-				//true이면 있다라는 의미, false이면 없다라는 의미
+			if (rs.next()) { // 검색 결과가 있는지 여부는 rs.next()
+				// true이면 있다라는 의미, false이면 없다라는 의미
 				System.out.println("검색결과 있음 성공.");
-				String id2 = rs.getString(1); //id
-				String pw = rs.getString(2); //pw
-				String name = rs.getString(3); //name
-				String tel = rs.getString(4); //tel
+				String id2 = rs.getString(1); // id
+				String pw = rs.getString(2); // pw
+				String name = rs.getString(3); // name
+				String tel = rs.getString(4); // tel
 				System.out.println(id2 + " " + pw + " " + name + " " + tel);
-				//검색 결과를 검색화면 ui부분을 주어야 함.
-				//1.가방을 만듭시다.
+				// 검색 결과를 검색화면 ui부분을 주어야 함.
+				// 1.가방을 만듭시다.
 				bag = new MemberVO();
 				bag.setId(id2);
 				bag.setName(name);
@@ -123,15 +191,13 @@ public class MemberDAO3 {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		//return id, pw, name, tel은 xxxx
-		//return 뒤에는 반드시 여러 데이터를 묶어서 리턴해주어야 한다.
-		//검색 결과가 있을 때는 bag에 데이터가 들어있음.
-		//검색 결과가 없을 때는 bag에 무엇이 들어있나? ==> null
+
+		// return id, pw, name, tel은 xxxx
+		// return 뒤에는 반드시 여러 데이터를 묶어서 리턴해주어야 한다.
+		// 검색 결과가 있을 때는 bag에 데이터가 들어있음.
+		// 검색 결과가 없을 때는 bag에 무엇이 들어있나? ==> null
 		return bag;
 	}
-	
-	
 
 	public int delete(MemberVO bag) {
 
