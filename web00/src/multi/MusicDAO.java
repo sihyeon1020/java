@@ -6,17 +6,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class ProductDAO {
-
-	// 로그인 화면 연동시키기 StartUI
-	public ArrayList<ProductVO> list() {
+public class MusicDAO {
+	
+	
+	//+++++++++++++++++++++++++++전체 정보 리스트++++++++++++++++++++++++++++
+	public ArrayList<MusicVO> list() {
 		ResultSet rs = null; // 항목명 + 결과 데이터를 담고 있는 테이블
 
 		// 가방들 넣어줄 큰 컨테이너 역할을 부품이 필요!
 		// ArrayList
-		ArrayList<ProductVO> list = new ArrayList<>();
+		ArrayList<MusicVO> list = new ArrayList<>();
 
-		ProductVO bag = null;
+		MusicVO bag = null;
 
 		try {
 			// 1.오라클 11g와 연결한 부품 설정
@@ -31,7 +32,7 @@ public class ProductDAO {
 			// String data = JOptionPane.showInputDialog("이름입력"); //String, 임아무개
 			System.out.println("2. mySQL 연결 성공.");
 
-			String sql = "select * from product"; // row 정보 다 들고 올 거니까 조건 없음
+			String sql = "select * from music"; // row 정보 다 들고 올 거니까 조건 없음
 			PreparedStatement ps = con.prepareStatement(sql); // PreparedStatement
 
 			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
@@ -39,30 +40,19 @@ public class ProductDAO {
 			rs = ps.executeQuery(); // select문 전송시
 			System.out.println("4. SQL문 오라클로 보내기 성공.");
 			while (rs.next()) { // 검색 결과가 있는지 여부는 rs.next()
-				//1.각 컬럼에 있는 값들을 추출해보자.
-				String id = rs.getString("id");
-				String name = rs.getString("name");
-				String content = rs.getString("content");
-				int price = rs.getInt("price");
-				String company = rs.getString("company");
-				String img = rs.getString("img");
-				
-				//2.가방을 만들어서 추출한 값들을 넣자.
-				bag = new ProductVO();
-				bag.setId(id);
-				bag.setName(name);
-				bag.setContent(content);
-				bag.setPrice(price);
-				bag.setCompany(company);
-				bag.setImg(img);
-				
-				//3.컨테이너에 가방을 넣자(row의 갯수)
+				bag = new MusicVO();
+				bag.setId(rs.getString("id"));
+				bag.setName(rs.getString("name"));
+				bag.setSinger(rs.getString("singer"));
+				bag.setGenre(rs.getString("genre"));
+				bag.setAlbum(rs.getString("album"));
+
+				// 4.list에 bag을 추가하자.
 				list.add(bag);
-				
-		
-				// ps.close();
-				// rs.close();
-				// con.close();
+
+				//ps.close();
+				//rs.close();
+				//con.close();
 			}
 
 			// System.out.println(result);
@@ -72,17 +62,16 @@ public class ProductDAO {
 
 		return list;
 	}
-
-
-	public ProductVO one(String id) {
-		System.out.println(id);
+	
+	//+++++++++++++++++++++++++++상세 정보++++++++++++++++++++++++++++
+	public MusicVO one(String id) {
 
 		ResultSet rs = null; // 항목명 + 결과 데이터를 담고 있는 테이블
 		// 기본형 정수/실수/문자/논리만 값으로 초기화
 		// 나머지 데이터형(참조형) 주소가 들어가있다.
 		// 참조형 변수를 초기화 할 때는 null(주소가 없다라는 의미)
 
-		ProductVO bag = null;
+		MusicVO bag = null;
 
 		try {
 			// 1.오라클 11g와 연결한 부품 설정
@@ -97,7 +86,7 @@ public class ProductDAO {
 			// String data = JOptionPane.showInputDialog("이름입력"); //String, 임아무개
 			System.out.println("2. mySQL 연결 성공.");
 
-			String sql = "select * from product where id = ? ";
+			String sql = "select * from music where id = ? ";
 			PreparedStatement ps = con.prepareStatement(sql); // PreparedStatement
 			ps.setString(1, id);
 			// con부품으로 sql스트링에 있는 것 SQL부품으로 만들어주세요.
@@ -106,22 +95,12 @@ public class ProductDAO {
 			rs = ps.executeQuery(); // select문 전송시
 			System.out.println("4. SQL문 오라클로 보내기 성공.");
 			if (rs.next()) { // 검색 결과가 있는지 여부는 rs.next()
-				// true이면 있다라는 의미, false이면 없다라는 의미
-				String id2 = rs.getString("id");
-				String name = rs.getString("name");
-				String content = rs.getString("content");
-				int price = rs.getInt("price");
-				String company = rs.getString("company");
-				String img = rs.getString("img");
-				
-				//2.가방을 만들어서 추출한 값들을 넣자.
-				bag = new ProductVO();
-				bag.setId(id2);
-				bag.setName(name);
-				bag.setContent(content);
-				bag.setPrice(price);
-				bag.setCompany(company);
-				bag.setImg(img);
+				bag = new MusicVO();
+				bag.setId(rs.getString("id"));
+				bag.setName(rs.getString("name"));
+				bag.setSinger(rs.getString("singer"));
+				bag.setGenre(rs.getString("genre"));
+				bag.setAlbum(rs.getString("album"));
 			} else {
 				System.out.println("검색결과 없음 실패.");
 			}
@@ -137,8 +116,108 @@ public class ProductDAO {
 		// 검색 결과가 없을 때는 bag에 무엇이 들어있나? ==> null
 		return bag;
 	}
+	
+	
+	//+++++++++++++++++++++++++++search++++++++++++++++++++++++++++
+	public ArrayList<MusicVO> search() {
+		ResultSet rs = null; // 항목명 + 결과 데이터를 담고 있는 테이블
 
-	public int delete(MemberVO bag) {
+		// 가방들 넣어줄 큰 컨테이너 역할을 부품이 필요!
+		// ArrayList
+		ArrayList<MusicVO> list = new ArrayList<>();
+
+		MusicVO bag = null;
+		try {
+			// 1.오라클 11g와 연결한 부품 설정
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("1. mySQL과 자바 연결할 부품 설정 성공.");
+
+			// 2.오라클 11g에 연결해보자.(java --- oracle)
+			String url = "jdbc:mysql://localhost:3306/multi?serverTimezome=UTC";
+			String user = "root";
+			String password = "1234";
+			Connection con = DriverManager.getConnection(url, user, password); // Connection
+			// String data = JOptionPane.showInputDialog("이름입력"); //String, 임아무개
+			System.out.println("2. mySQL 연결 성공.");
+
+			String sql = "select * from singer where music like ?"; // row 정보 다 들고 올 거니까 조건 없음
+			PreparedStatement ps = con.prepareStatement(sql); // PreparedStatement
+		
+			
+			PreparedStatement.setString(1, "%"+singer+"%");
+			ps.setString(2, bag.getSinger());
+
+			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
+
+			rs = ps.executeQuery(); // select문 전송시
+			System.out.println("4. SQL문 오라클로 보내기 성공.");
+			while (rs.next()) { // 검색 결과가 있는지 여부는 rs.next()
+				bag = new MusicVO();
+				bag.setId(rs.getString("id"));
+				bag.setName(rs.getString("name"));
+				bag.setSinger(rs.getString("singer"));
+				bag.setGenre(rs.getString("genre"));
+				bag.setAlbum(rs.getString("album"));
+
+				// 4.list에 bag을 추가하자.
+				list.add(bag);
+
+				//ps.close();
+				//rs.close();
+				//con.close();
+			}
+
+			// System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	
+	
+	//+++++++++++++++++++++++++++update++++++++++++++++++++++++++++
+	public int update(MusicVO bag) {
+		int result = 0;
+		try {
+			// 1.오라클 11g와 연결한 부품 설정
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("1. mySQL과 자바 연결할 부품 설정 성공.");
+
+			// 2.오라클 11g에 연결해보자.(java --- oracle)
+			String url = "jdbc:mysql://localhost:3306/multi?serverTimezome=UTC";
+			String user = "root";
+			String password = "1234";
+			Connection con = DriverManager.getConnection(url, user, password); // Connection
+			// String data = JOptionPane.showInputDialog("이름입력"); //String, 임아무개
+			System.out.println("2. mySQL 연결 성공.");
+
+			String sql = "update music set name = ?, singer = ? where id = ? ";
+			PreparedStatement ps = con.prepareStatement(sql); // PreparedStatement
+			ps.setString(1, bag.getName());
+			ps.setString(2, bag.getSinger());
+			ps.setString(3, bag.getId());
+
+			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
+
+			result = ps.executeUpdate(); // insert, update, delete문만!! sql문 실행결과가 int
+			System.out.println("4. SQL문 오라클로 보내기 성공.");
+
+			if (result == 1) {
+				System.out.println("수정 성공!");
+			}
+
+			// System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+	
+	//+++++++++++++++++++++++++++delete++++++++++++++++++++++++++++
+	public int delete(MusicVO bag) {
 
 		int result = 0; // 결과값 저장하는 변수 만들어주기
 
@@ -155,7 +234,7 @@ public class ProductDAO {
 			// String data = JOptionPane.showInputDialog("이름입력"); //String, 임아무개
 			System.out.println("2. mySQL 연결 성공.");
 
-			String sql = "delete from member where id = ? ";
+			String sql = "delete from music where id = ? ";
 			PreparedStatement ps = con.prepareStatement(sql); // PreparedStatement
 			ps.setString(1, bag.getId());
 			// con부품으로 sql스트링에 있는 것 SQL부품으로 만들어주세요.
@@ -175,45 +254,8 @@ public class ProductDAO {
 		return result;
 	}
 
-	public int update(MemberVO bag) {
-		int result = 0;
-		try {
-			// 1.오라클 11g와 연결한 부품 설정
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("1. mySQL과 자바 연결할 부품 설정 성공.");
-
-			// 2.오라클 11g에 연결해보자.(java --- oracle)
-			String url = "jdbc:mysql://localhost:3306/multi?serverTimezome=UTC";
-			String user = "root";
-			String password = "1234";
-			Connection con = DriverManager.getConnection(url, user, password); // Connection
-			// String data = JOptionPane.showInputDialog("이름입력"); //String, 임아무개
-			System.out.println("2. mySQL 연결 성공.");
-
-			String sql = "update member set tel = ? where id = ? ";
-			PreparedStatement ps = con.prepareStatement(sql); // PreparedStatement
-			ps.setString(1, bag.getTel());
-			ps.setString(2, bag.getId());
-
-			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
-
-			result = ps.executeUpdate(); // insert, update, delete문만!! sql문 실행결과가 int
-			System.out.println("4. SQL문 오라클로 보내기 성공.");
-
-			if (result == 1) {
-				System.out.println("수정 성공!");
-			}
-
-			// System.out.println(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
-	// public void add2() {
-	public int insert(ProductVO bag) {
+	//+++++++++++++++++++++++++++insert++++++++++++++++++++++++++++
+	public int insert(MusicVO bag) {
 
 		int result = 0;
 
@@ -231,23 +273,23 @@ public class ProductDAO {
 			System.out.println("2. mySQL 연결 성공.");
 
 			// public void insert(String id, String pw, String name, String tel)
-			String sql = "insert into product values (?, ?, ?, ?, ?, ?)";
+			String sql = "insert into music values (?, ?, ?, ?, ?)";
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			// 2. 가방에서 값들을 하나씩 꺼내쓰세요.
 			ps.setString(1, bag.getId());
 			ps.setString(2, bag.getName());
-			ps.setString(3, bag.getContent());
-			ps.setInt(4, bag.getPrice());
-			ps.setString(5, bag.getCompany());
-			ps.setString(6, bag.getImg());
+			ps.setString(3, bag.getSinger());
+			ps.setString(4, bag.getGenre());
+			ps.setString(5, bag.getAlbum());
+	
 
 			System.out.println("3. SQL문 부품(객체)으로 만들어주기 성공.");
 
 			result = ps.executeUpdate(); // 1
 			System.out.println("4. SQL문 오라클로 보내기 성공.");
 			if (result == 1) {
-				System.out.println("회원가입 성공!");
+				System.out.println("앨범 업로드 성공!");
 			}
 
 			// System.out.println(result);
@@ -262,5 +304,7 @@ public class ProductDAO {
 		System.out.println(result);
 		return result;
 	}
-
+	
+	
+	
 }
