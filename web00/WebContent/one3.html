@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시판 검색(상세)페이지</title>
+<style type="text/css">
+body { /* 컨트롤 + / = 자동 주석, 태그선택! */
+	background: #c6baff;
+}
+
+button {
+	background: #b5f547;
+}
+
+.t1 { /* .은 클래ㅔ스 선택!, 여러개 선택! */
+	background: yellow;
+	width: 300px;
+	text-align: center;
+}
+
+#b1 { /* #은 아이디 선택!, 특정한 것 한개만 선택! */
+	color: red;
+}
+
+#b2 { /* #은 아이디 선택!, 특정한 것 한개만 선택! */
+	background: #2329cf;
+	color: white;
+}
+</style>
+</head>
+<body>
+	<h3>상품 정보 검색(상세) 페이지</h3>
+	<hr>
+	<a href="index.html">
+		<button id="b1">첫페이지로</button>
+	</a>
+	<hr>
+	<!-- a태그는 무조건 get방식 요청 -->
+	<a href="one3.jsp?id=100">
+		<button>100</button>
+	</a>
+	<a href="one3.jsp?id=101">
+		<button>101</button>
+	</a>
+	<a href="one3.jsp?id=102">
+		<button>102</button>
+	</a>
+	<hr>
+	
+	<form action="one3.jsp" method="get">
+		<!-- http://localhost:8888/web00/delete2.jsp?no=100 
+	 get 방식은 주소에 값이 따라간다. ex) 비밀번호나 중요한 정보는 get으로 가져오면 안된다.-->
+		<table border="1">
+			<tr>
+				<td class="t1">검색할 아이디 :</td>
+				<td><input name="id"></td>
+			</tr>
+
+			<tr>
+				<td colspan="2" class="t1">
+					<button id="b2">검색할 id 데이터 전송</button>
+				</td>
+			</tr>
+		</table>
+
+	</form>
+</body>
+</html>

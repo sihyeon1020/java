@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>노래 삭제 페이지</title>
+<style type="text/css">
+body { /* 컨트롤 + / - 자동주석, 태그선택! */
+	background: #b5e7f7;
+}
+
+button {
+	background: #ffc9ea;
+}
+
+.t1 { /* .은 클래스 선택!, 여러개선택!  */
+	background: #63b1ff;
+	width: 150px;
+	text-align: center;
+}
+
+#b1 { /* #은 아이디 선택!, 특정한 것 한 개만 선택! */
+	color: red;
+}
+#b2{
+	color: blue;
+	
+}
+</style>
+</head>
+<body>
+<form action="delete5.jsp" method="get">
+<!-- http://localhost:8888/web00/delete2.jsp?no=100 
+	 get 방식은 주소에 값이 따라간다. ex) 비밀번호나 중요한 정보는 get으로 가져오면 안된다.-->
+	<table border="1">
+			<tr>
+				<td class="t1">삭제할 음악 아이디</td>
+				<td><input name="id"></td>
+			</tr>
+		
+			<tr>
+				<td colspan="2" class="t1">
+					<button id="b2">삭제할 음악 데이터 전송</button>
+				</td>
+			</tr>
+		</table>
+
+</form>
+</body>
+</html>
