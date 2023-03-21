@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function login(){
+		//아이디 입력한 값 가져오기 
+		id = document.getElementById("user").value
+		//패스워드 입력한 값 가지고 오기 
+		pw = document.getElementById("pw").value
+		
+		//<div> tag : html의 주요 구성요소(element ==> tag)
+		resultTag = document.getElementById("result")
+		//id가 result인 태그를 가지고 와주세요. !<div id = result></div>
+		if(id == 'root' && pw == '1234'){
+			//alert('로그인 성공')
+			//resultTag.innerHTML = '<b>로그인 성공</b>'
+			resultTag.innerHTML = '<img src=img/yes.png width=200 height=200>'
+		}else{
+			//alert('로그인 실패')
+			//resultTag.innerHTML = '<b>로그인 실패</b>'
+			resultTag.innerHTML = '<img src=img/no.png width=200 height=200>'
+		}
+	}
+	
+	function age(){
+		year = document.getElementById("year").value//태어난 연도 
+		age2 = 2023 - parseInt(year) //parseInt() 숫자 인식  
+		
+		resultTag = document.getElementById("result")
+		resultTag.innerHTML = '<b>나이는</b> ' + age2 + '<b>살 입니다.</b>'
+		//alert(age2)
+	}
+	 
+	
+	function rec(){
+		width = document.getElementById("w").value
+		height = document.getElementById("h").value
+		
+		w2 = parseFloat(width) //parseFloat() 소수점 표기
+		h2 = parseFloat(height)
+		
+		alert(w2 * h2)
+	}
+	
+</script>
+</head>
+<body>
+	아이디 입력 : <input id="user" value="root"> <br>
+	패스워드 입력 : <input id="pw"> <br>
+	<Button onclick="login()">로그인 처리</Button> <br>
+	
+	<hr color=red>
+	나이 계산(태어난 연도) : <input id="year" value="2000"> <br>
+	<Button onclick="age()">나이 계산 처리</Button> <br>
+	
+	<hr color=blue>
+	가로 길이 : <input id ="w" value="11.11"><br>
+	세로 길이 : <input id ="h" value="22.22"><br>
+	<Button onclick="rec()">사각형의 면적 처리</Button>
+	
+	<hr color=yellow>
+	<div id ="result" style="color:red; background:yellow; width: 500px; height:50px; font-szie:30 "> 결과 넣는 곳</div>
+</body>
+</html>

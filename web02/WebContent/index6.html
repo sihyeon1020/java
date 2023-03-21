@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	//글자수 체크 버튼
+	function me(){
+		name = document.getElementById("name").value
+		company = document.getElementById("company").value
+		rank = document.getElementById("rank").value
+		gender = document.getElementById("gender").value
+		
+		resultTag = document.getElementById("result")
+		if(gender =="남자"){
+			resultTag.innerHTML = company + '회사에 ' + rank + '으로 있는 ' + name +'입니다.' + '<br><img src=img/man.png width=200 height=200>'
+		} else if (gender == "여자"){
+			resultTag.innerHTML = company + '회사에 ' + rank + '으로 있는 ' + name +'입니다.' + '<br><img src=img/woman.png width=200 height=200>'
+		} else {
+			resultTag.innerHTML = "성별을 다시 입력해주세요."
+		}
+	}
+
+	//패스워드 동일 버튼
+	function pass(){
+		pw = document.getElementById("pw").value
+		pw2 = document.getElementById("pw2").value
+		
+		resultTag = document.getElementById("result")
+		if(pw == pw2){
+			//resultTag.innerHTML = '패스워드가 동일합니다.' + '<br><img src=img/yes.png width=200 height=200>'
+			location.href = "http://www.naver.com"
+		} else {
+			//resultTag.innerHTML = '패스워드가 동일하지 않습니다.' + '<br><img src=img/no.png width=200 height=200>'
+			//location은 브라우저의 주소 부분을 나타내는 내장된 객체
+			//location의 href라는 변수에 요청하고 싶은 주소를 넣어주면
+			//자바스크립트의 브라우저의 주소 부분에 주소를 넣고 엔터까지 쳐서 요청을 해줌.
+			location.href = "http://www.daum.net"
+		}
+	}
+	
+</script>
+</head>
+<body>
+	이름:  <input id="name" value="홍길동"> <br>
+	회사명:  <input id="company" value="멀티"> <br>
+	직책:  <input id="rank" value="팀장"> <br>
+	성별:  <input id="gender" value="남자"> <br>
+	
+	<br><Button onclick="me()">확인</Button>
+	
+	
+	<hr>
+	가방안에 들어있는 물건 중 제일 중요한 것 : <input id="bag"> <br>
+	<Button onclick="bag()">제일 중요한 것 확인</Button> <br>
+	가방안에 들어있는 물건 중 두번째로 중요한 것  : <input id="bag2"> <br>
+	<Button onclick="bag2()">두번째 중요한 것 확인</Button>
+	
+	<hr>
+	<div id ="result" style="color:red; background:yellow; width: 300px; height:300px; font-szie:30 "> 결과창</div>
+</body>
+</html>
