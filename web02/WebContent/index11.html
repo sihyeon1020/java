@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.6.4.js"></script>
+<script type="text/javascript">
+	$(function() {
+		i = $("#in").val()//input 값
+		divTag = $("#result") //결과 값 보이는 div
+		img = divTag.innerHTML = '<img src=img/yes.png width=50 height=50>' //이미지
+		
+		$("#b1").click(function() {
+			divTag.append(i + "<br>")
+		})//글자추가 버튼
+		
+		$("#b2").click(function() {
+			divTag.append(img + "<br>")
+		})//이미지추가 버튼
+		
+		$("#b3").click(function() {
+			divTag.append(img + i + "<br>" + "<hr>")
+		})//댓글 추가 버튼
+	})
+</script>
+</head>
+<body>
+	입력내용 : <input id="in" value="hellow" style="background:yellow"><br>
+
+	<button id="b1">글자 추가</button>
+	<button id="b2">이미지 추가</button>
+	<button id="b3">댓글 추가</button>
+	<hr color="black">
+	<div id="result"></div>
+</body>
+</html>
