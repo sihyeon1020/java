@@ -2,6 +2,8 @@ package com.multi.mvc01;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +20,15 @@ public class MemberController {
 	// 회원가입, 수정, 탈퇴, 정보 검색
 
 	@RequestMapping("login")//jsp의 form 값과 동일하면 아래의 메서드를 실행시킨다
-	public String login(MemberVO bag) {
+	public String login(MemberVO bag, HttpSession session) {
 		System.out.println(bag);
 		//dao를 이용해서 db처리를 할 예정 
 		//views 아래로 넘어가게 되어있다.
 		//views 아래 login.jsp를 호출하게 됨
 		int result  = dao.login(bag);
 		if(result == 1 ) {
+			//로그인 성공하면, 세션을 잡아두자
+			session.setAttribute("id", bag.getId());//★세션잡아둔것
 			return "ok"; //views 아래 파일 이름.jsp 
 		} else {
 			//views아래가 아니고, webapp아래
