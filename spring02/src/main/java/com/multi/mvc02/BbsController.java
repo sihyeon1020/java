@@ -30,6 +30,7 @@ public class BbsController {
 		dao.insert(bag);
 	}
 	
+	//bbs 수정
 	@RequestMapping("update2.multi")
 	public void update(BbsVO bag, BbsDAO dao) {
 		System.out.println("update요청됨.");
@@ -37,6 +38,7 @@ public class BbsController {
 		dao.update(bag);
 	}
 	
+	//bbs 삭제
 	@RequestMapping("delete2.multi")
 	public void delete(int no, BbsDAO dao) {
 		System.out.println("delete요청됨.");
@@ -65,10 +67,27 @@ public class BbsController {
 		model.addAttribute("list", list);
 	}
 	
+	
+	//ajax -  bbs 리스트 가지고 오기
+	@RequestMapping("list5")
+	public void list5(Model model) {
+		ArrayList<BbsVO> list = dao.list();
+		System.out.println(list.size()); //사이즈를 찍어보세요.
+		model.addAttribute("list", list);
+	}
+	
+	
+	@RequestMapping("one6")
+	public void one6(int no, Model model) {
+		System.out.println("one요청됨.");
+		BbsVO bag = dao.one(no);
+		model.addAttribute("bag", bag);
+	}
+	
+
+	
 	//https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%EC%9E%90%EB%8F%99%EC%B0%A8
 	
-	
-	
-	
+
 	
 }
