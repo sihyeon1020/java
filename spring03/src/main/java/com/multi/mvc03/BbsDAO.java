@@ -16,10 +16,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class BbsDAO {
 	
-	//mybatis 싱글톤 객체 찾아서 주소를 넣어주세요!
 	@Autowired
 	SqlSessionTemplate my;
 
+	public int insert(BbsVO bag) {
+		int result = my.insert("bbs.create",bag);
+		return result;
+	}
+	
+	public int update(BbsVO bag) {
+		int result = my.update("bbs.update",bag);
+		return result;
+	}
+	
+	public int delete(int no) {
+		int result = my.delete("bbs.delete",no);
+		return result;
+	}
+	
+	
+	public BbsVO one(int no) {
+		BbsVO bag = my.selectOne("bbs.one", no);
+		return bag;
+	}
+	
+	
 //	public ArrayList<BbsVO> list() {
 //
 //		return list;
@@ -37,13 +58,7 @@ public class BbsDAO {
 //
 //	}
 //
-//	public void update(BbsVO bag) {
-//
-//	}
 
-	// public void add2() {
-	public int insert(BbsVO bag) {
-		int result = my.insert("bbs.bbscreate",bag);
-		return result;
-	}
+
+
 }

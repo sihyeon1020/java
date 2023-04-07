@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="movie">
+	
+
+	<insert id="create" parameterType="movieVO">
+		insert into movie0407 values (null, #{title}, #{genre}, #{grade}, #{director})
+	</insert>
+
+	<update id="update"  parameterType="movieVO">
+		update movie0407 set grade = #{grade} where id = #{id}
+	</update>
+
+	<delete id="delete"  parameterType="movieVO">
+		delete from movie0407 where id = #{id}
+	</delete>
+
+	<select id="one" parameterType="Int" resultType="movieVO">
+		select * from movie0407 where id = #{id}
+	</select>
+		
+		<select id="all" resultType="movieVO">
+		select * from movie0407
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
