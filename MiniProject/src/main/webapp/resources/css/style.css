@@ -1,0 +1,9 @@
+@charset "UTF-8";
+body{
+}
+
+h3{font-weight:bold;}
+.m_name{ background-color:#fff1ba; width: fit-content;}
+
+.rev_result{display:block; weight:auto; height:150px; background:#f5f3eb;}
+.jjim_result{display:block; weight:auto; height:150px; background:#f5f3eb;}
